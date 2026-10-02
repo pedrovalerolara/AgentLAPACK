@@ -1,0 +1,32 @@
+[
+  {
+    "question": "Can you generate PLASMA code for this LAPACK specification? \ndgetrf(int m, int n, double *a, int lda, int *ipiv, int info)",
+    "context": "LAPACK to PLASMA",
+    "answer": "plasma_set( PlasmaTuning, PlasmaDisabled ); \nplasma_set( PlasmaNb, 256 ); \nplasma_set( PlasmaIb, 64 ); \nplasma_set( PlasmaNumPanelThreads, 1 ); \n*a = (double*) malloc ( (size_t) lda*n*sizeof(double) ); \n*ipiv = (int*) malloc ( (size_t) m*sizeof(int) ); \ninfo = plasma_dgetrf( m, n, a, lda, ipiv );"
+  },
+  {
+    "question": "Can you generate PLASMA code for this LAPACK specification? \ndpotrf(’U’, int n, double *a, int lda, int info)",
+    "context": "LAPACK to PLASMA",
+    "answer": "plasma_set( PlasmaTuning, PlasmaDisabled ); \nplasma_set( PlasmaNb, 256 ); \ndouble *a = (double*) malloc ( (size_t) lda*n*sizeof(double) ); \ninfo = plasma_dpotrf( ‘U’, n, a, lda );"
+  },
+  {
+    "question": "Can you generate MAGMA code for this LAPACK specification? \ndgetrf(int m, int n, double *a, int lda, int *ipiv, int info)",
+    "context": "LAPACK to MAGMA",
+    "answer": "magma_imalloc_cpu( &ipiv, min_m ); \nmagma_dmalloc_pinned( &a,  lda*n ); \nmagma_dgetrf( m, n, a, lda, ipiv, &info );"
+  },
+  {
+    "question": "Can you generate MAGMA code for this LAPACK specification? \ndpotrf(’U’, int n, double *a, int lda, int info)",
+    "context": "LAPACK to MAGMA",
+    "answer": "magma_dmalloc_pinned( &a, n*lda ); \nmagma_dpotrf( opts.uplo, N, a, lda, &info );"
+  },
+  {
+    "question": "Can you generate SLATE code for this LAPACK specification? \ndgetrf(int m, int n, double *a, int lda, int *ipiv, int info)",
+    "context": "LAPACK to SLATE",
+    "answer": "int mpi_size = 0; \nint mpi_rank = 0; \nint grid_p = 0; \nint grid_q = 0; \nint provided = 0; \nint64_t nb = 256; \nslate_mpi_call( MPI_Init_thread( &argc, &argv, MPI_THREAD_MULTIPLE, &provided ) ); \nslate_mpi_call( MPI_Comm_size( MPI_COMM_WORLD, &mpi_size ) ); \nslate_mpi_call( MPI_Comm_rank( MPI_COMM_WORLD, &mpi_rank ) ); \ngrid_size( mpi_size, &grid_p, &grid_q ); \nslate::Matrix<double> a( m,  n,  nb, grid_p, grid_q, MPI_COMM_WORLD ); \nslate::Pivots pivots; \na.insertLocalTiles(); \nslate::getrf( a, pivots ); \nslate_mpi_call( MPI_Finalize() );"
+  },
+  {
+    "question": "Can you generate SLATE code for this LAPACK specification? \ndpotrf(’U’, int n, double *a, int lda, int info)",
+    "context": "LAPACK to SLATE",
+    "answer": "int mpi_size = 0; \nint mpi_rank = 0; \nint grid_p = 0; \nint grid_q = 0; \nint provided = 0; \nint64_t nb = 256; \nslate_mpi_call( MPI_Init_thread( &argc, &argv, MPI_THREAD_MULTIPLE, &provided ) ); \nslate_mpi_call( MPI_Comm_size( MPI_COMM_WORLD, &mpi_size ) ); \nslate_mpi_call( MPI_Comm_rank( MPI_COMM_WORLD, &mpi_rank ) ); \ngrid_size( mpi_size, &grid_p, &grid_q ); \nslate::HermitianMatrix<double> a( slate::Uplo::Upper, n, nb, grid_p, grid_q, MPI_COMM_WORLD ); \na.insertLocalTiles(); \ninfo = slate::potrf( a ); \nslate_mpi_call( MPI_Finalize() );"
+  }
+]
