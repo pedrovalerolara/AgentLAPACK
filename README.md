@@ -11,4 +11,4 @@ This repository is composed of the next atifacts:
 
 Also, this repository is composed of the necessary data to be used for training (fine-tuning):
 - Examples of the VisionLAPACK images (matrix equations) can be found in the /VisionLAPACK/VisionLAPACK-data/ folder
-- Examples of the ChatLAPACK HPC codes can be found in the /ChatLAPACK/ChatLAPACK-data-examples folder
+- Examples of the ChatLAPACK HPC codes can be found in the /ChatLAPACK/ChatLAPACK-data folder
